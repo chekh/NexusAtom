@@ -1,0 +1,12 @@
+---
+id: asset_marketplace
+version: 1.0.0
+types:
+  - skill
+  - template
+permissions:
+  read: [public]
+  write: [maintainer]
+dark_zones: []
+archive_policy:
+  mode: local

@@ -1,0 +1,7 @@
+---
+id: skill/notebook/1.0.0
+name: notebook
+version: 1.0.0
+roles: [writer, curator]
+description: "Управление идеями. Версия для публичного магазина."
+created: 2026-04-13
