@@ -1,0 +1,13 @@
+tools:
+  - name: create_artifact
+    usage: "Используй для создания новых идей. Путь: workspace/inbox/{date}_{slug}.md"
+    required_fields: [title, content]
+    default_status: raw
+  - name: query_vault
+    usage: "Используй для поиска идей по тегам или статусу. Всегда указывай `nuclear_id: notebook`."
+    max_results: 20
+  - name: transition_status
+    usage: "Меняй статус идеи с 'raw' на 'refined' только после явного подтверждения пользователя."
+    allowed_transitions: [raw -> refined, refined -> archived]
+  - name: resolve_links
+    usage: "Используй для связывания идей между собой (например, 'эта идея дополняет ту')."

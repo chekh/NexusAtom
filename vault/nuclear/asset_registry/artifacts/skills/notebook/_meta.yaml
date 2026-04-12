@@ -1,0 +1,7 @@
+---
+id: skill/notebook/v1
+name: notebook
+version: 1.0.0
+roles: [writer, curator]
+description: "Управление идеями, заметками и инсайтами в режиме быстрого захвата."
+created: 2026-04-13

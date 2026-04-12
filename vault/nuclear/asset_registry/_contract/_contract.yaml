@@ -1,0 +1,14 @@
+---
+id: asset_registry
+version: 1.0.0
+types:
+  - skill
+  - template
+  - profile
+permissions:
+  read: [public]
+  write: [maintainer]
+dark_zones: []
+archive_policy:
+  mode: local
+  ttl_drafts: 90d
