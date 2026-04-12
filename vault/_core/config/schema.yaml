@@ -1,0 +1,35 @@
+profiles:
+  delivery:
+    description: "Атомы поставки ценности (код, контракты, тесты)"
+    required_artifacts: [spec, manifest, _meta]
+    fsm_strict: true
+    ci_gate: required
+    archive_mode: logical
+
+  context:
+    description: "Знание, контекст, исследования, правила"
+    required_artifacts: [_meta]
+    fsm_strict: false
+    ci_gate: optional
+    archive_mode: logical
+
+types:
+  concept:
+    profile: context
+    fsm: [draft, active, deprecated, archived]
+    template: templates/concept.md
+
+  overview:
+    profile: context
+    fsm: [draft, active, archived]
+    template: templates/overview.md
+
+  atom:
+    profile: delivery
+    fsm: [draft, rfc, approved, in_progress, completed, partial, deferred, archived]
+    template: templates/atom.md
+
+  research_log:
+    profile: context
+    fsm: [raw, analyzed, synthesized, archived]
+    template: templates/research.md

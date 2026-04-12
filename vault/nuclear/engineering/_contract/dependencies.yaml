@@ -1,0 +1,18 @@
+# vault/nuclear/engineering/dependencies.yaml
+# Зависимости ядерного ресурса engineering от других ресурсов
+
+# Формат:
+# - nuclear_id: "id_ресурса"
+#   version_constraint: ">=1.0.0"
+#   required_for: [список типов артефактов, для которых нужна эта зависимость]
+#   optional: false  # Если true, ресурс может работать без этой зависимости
+
+dependencies:
+  # Пример:
+  # - nuclear_id: "security"
+  #   version_constraint: ">=1.0.0"
+  #   required_for: ["requirement", "protocol"]
+  #   optional: false
+
+# Пока зависимостей нет — engineering является корневым ресурсом методологии
+# При добавлении новых ядерных ресурсов (например, "research") обновите этот файл

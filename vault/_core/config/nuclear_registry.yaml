@@ -1,0 +1,23 @@
+# vault/_system/nuclear_registry.yaml
+# Реестр активных ядерных ресурсов
+# Формат: {resource_id}: {path, version, status, dependencies}
+
+nuclear_resources:
+  engineering:
+    path: "nuclear/engineering"
+    version: "1.0.0"
+    status: "active"
+    description: "Ядерный ресурс для разработки NexusAtom"
+    dependencies: []
+    contract_hash: "pending_initialization"
+    last_updated: "2026-04-11"
+
+# Пример добавления нового ресурса:
+# research:
+#   path: "nuclear/research"
+#   version: "1.0.0"
+#   status: "active"
+#   description: "Научные исследования и эксперименты"
+#   dependencies: []
+#   contract_hash: ""
+#   last_updated: ""

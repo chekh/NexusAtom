@@ -1,0 +1,15 @@
+system:
+  name: NexusAtom
+  version: 0.2.0
+  vault_root: vault/
+  default_profile: context
+  
+  reactor:
+    indexer: incremental
+    resolver: id_based
+    aggregation: dynamic_queries
+  
+  safety:
+    allow_physical_move: false
+    require_human_approve_for: [governance, architecture, adr]
+    agent_writes_via: api_cli_only

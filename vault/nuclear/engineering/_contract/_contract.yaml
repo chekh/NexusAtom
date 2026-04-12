@@ -1,0 +1,122 @@
+# vault/nuclear/engineering/_system/_contract.yaml
+# Локальный контракт ядерного ресурса: engineering
+# Версия: 1.0.0
+#
+# СТАНДАРТ ЯДЕРНОГО РЕСУРСА:
+# - `_system/` (обязательно): контракт, зависимости, локальные правила.
+# - `_archive/` (обязательно): локальный архив для мобильности ресурса.
+# - Остальные папки (опционально): определяются этим контрактом.
+#   Пример: `workspace/` для активной работы, `artifacts/` для готовой ценности.
+#   Другой ресурс может иметь `research/`, `experiments/`, `docs/` — на усмотрение контракта.
+
+resource:
+  id: "engineering"
+  description: "Разработка ядра и методологии NexusAtom"
+  version: "1.0.0"
+  owner: "NexusAtom Core Team"
+
+# Типы артефактов, допустимые в этом ресурсе
+artifact_types:
+  - type: "analysis"
+    profile: "context"
+    required_fields: ["id", "type", "status", "traces"]
+    allowed_statuses: ["active", "draft", "archived"]
+  - type: "decision"
+    profile: "governance"
+    required_fields: ["id", "type", "status", "context", "decision"]
+    allowed_statuses: ["proposed", "accepted", "superseded"]
+  - type: "requirement"
+    profile: "delivery"
+    required_fields: ["id", "type", "status", "description", "acceptance_criteria"]
+    allowed_statuses: ["draft", "approved", "implemented", "verified"]
+  - type: "problem"
+    profile: "context"
+    required_fields: ["id", "type", "status", "description"]
+    allowed_statuses: ["open", "investigating", "resolved", "wontfix"]
+  - type: "review"
+    profile: "governance"
+    required_fields: ["id", "type", "status", "findings"]
+    allowed_statuses: ["draft", "published", "superseded"]
+  - type: "inquiry"
+    profile: "context"
+    required_fields: ["id", "type", "status", "question"]
+    allowed_statuses: ["open", "triaged", "researching", "answered", "archived"]
+  - type: "protocol"
+    profile: "governance"
+    required_fields: ["id", "type", "status", "rules"]
+    allowed_statuses: ["draft", "active", "deprecated"]
+  - type: "template"
+    profile: "context"
+    required_fields: ["id", "type", "status", "content"]
+    allowed_statuses: ["active", "deprecated"]
+
+# Права доступа (дополняют глобальные правила из _system/security_policy.yaml)
+acl:
+  roles:
+    architect:
+      read: ["all"]
+      write: ["analysis", "decision", "requirement", "protocol"]
+      approve: ["decision", "requirement"]
+    builder:
+      read: ["all"]
+      write: ["requirement", "problem", "template"]
+      approve: []
+    reviewer:
+      read: ["all"]
+      write: ["review", "inquiry"]
+      approve: ["review"]
+    auditor:
+      read: ["all"]
+      write: []
+      approve: []
+
+# Зоны тьмы для этого ресурса (дополняют глобальные)
+dark_zones:
+  - path: "artifacts/reviews/drafts/**"
+    type: "read_blind"
+    reason: "Черновики рецензий не утверждены"
+    roles_allowed: ["reviewer", "architect"]
+  - path: "artifacts/inquiries/**"
+    type: "token_economic_block"
+    reason: "Вопросы могут быть объёмными, загружать только по явному запросу"
+
+# Интеграция с памятью агентов
+memory_integration:
+  enabled: true
+  agent_roles_allowed: ["architect", "builder", "reviewer"]
+  vectorize_for_rag: true
+  exclude_paths: ["artifacts/reviews/drafts/**", "_archive/**"]
+
+# Архивная политика
+archive_policy:
+  mode: "local"  # local | hybrid_cas
+  ttl_drafts: "90d"
+  ttl_rejected: "180d"
+  immutable_types: ["decision", "protocol"]
+  cas_enabled: false  # Включить дедупликацию через CAS
+
+# Зависимости от других ядерных ресурсов
+dependencies_ref: "dependencies.yaml"
+
+# Внутренняя структура этого ресурса (опционально, определяется контрактом)
+# Другие ресурсы могут иметь другую структуру — это не стандарт, а пример.
+internal_structure:
+  workspace:
+    description: "Активная работа над артефактами этого ресурса"
+    subdirs:
+      - inbox    # Быстрый захват идей/задач
+      - drafts   # Черновики артефактов
+      - current  # Ярлыки на активные артефакты для быстрого доступа
+    lifecycle: "Перемещается в artifacts/ при утверждении"
+  artifacts:
+    description: "Утверждённая ценность, произведённая этим ресурсом"
+    subdirs:
+      - analysis
+      - decisions
+      - inquiries
+      - problems
+      - protocols
+      - requirements
+      - reviews
+      - templates
+    lifecycle: "Immutable после статуса 'approved', архивируется в _archive/ при устаревании"

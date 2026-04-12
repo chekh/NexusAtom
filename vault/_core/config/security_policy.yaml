@@ -1,0 +1,36 @@
+# vault/_system/security_policy.yaml
+# Глобальная политика безопасности для всех ядерных ресурсов
+
+# Запрещённые типы данных (локальный контракт не может переопределить)
+forbidden_fields:
+  - "password_plaintext"
+  - "api_key_unencrypted"
+  - "pii_unredacted"
+
+# Глобальные Зоны тьмы (применяются ко всем ресурсам)
+global_dark_zones:
+  - path: "archive/**"
+    type: "token_economic_block"
+    reason: "Архивные данные не нужны для активной работы, экономят токены"
+  - path: "**/drafts/**"
+    type: "read_blind"
+    reason: "Черновики не утверждены, могут содержать неполную информацию"
+    roles_allowed: ["author", "reviewer"]
+
+# Требования к шифрованию
+encryption:
+  agent_memory: true  # Шифровать память агентов по умолчанию
+  nuclear_contracts: false  # Контракты ресурсов — открыты для аудита
+  archive_sensitive: true  # Чувствительные данные в архиве — шифровать
+
+# Аудит
+audit:
+  log_dark_zone_access: true
+  log_contract_changes: true
+  retention_days: 365
+
+# Валидация локальных контрактов
+contract_validation:
+  cascade_check: true  # Локальный контракт проверяется на соответствие глобальной политике
+  require_signature: false  # Требовать криптографическую подпись контракта
+  allowed_overrides: []  # Какие поля локальный контракт может переопределить (пусто = ничего)
