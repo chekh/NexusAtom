@@ -1,0 +1,6 @@
+# Registry for Nuclear Resource: Engineering
+# Standard: Short ID (RES-SEQ)
+
+version: 1.0
+resource_code: ENG
+last_id: 1  # Следующий документ получит ENG-002
